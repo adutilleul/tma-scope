@@ -119,7 +119,13 @@ static QBDI::VMAction onTarget(QBDI::VMInstanceRef vm, QBDI::GPRState *gprState,
   vfork_child_run({"/usr/bin/taskset", "--pid", "--cpu-list", "0", std::to_string(pid)}, [&]() {
     std::string tma_output_file = getenv("TMA_OUTPUT_FILE");
     std::string tma_level = getenv("TMA_LEVEL");
-    vfork_child_run({"/usr/bin/perf", "stat", "-M", tma_level, "-p", std::to_string(pid), "-o", tma_output_file});
+    if(getenv("TMA_TOPLEV") == NULL) {
+      vfork_child_run({"/usr/bin/perf", "stat", "-M", tma_level, "-p", std::to_string(pid), "-o", tma_output_file});
+    } else {
+      std::string tma_toplev = getenv("TMA_TOPLEV");
+      vfork_child_run({"/usr/bin/python", tma_toplev + "/toplev.py", "--single-thread", "-l", tma_level, "-o", tma_output_file, "--pid", std::to_string(pid), "--core", "C0"});
+    }
+
   });
 
   return QBDI::CONTINUE;
