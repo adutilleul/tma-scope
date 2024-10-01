@@ -63,7 +63,7 @@ static void onBeforeTarget(void *ctx, void **data) {
   std::string tma_core = getenv("TMA_CORE");
 
   vfork_child_run(
-      {"/usr/bin/taskset", "--pid", "--cpu-list", "0", std::to_string(pid)},
+      {"/usr/bin/taskset", "--pid", "--cpu-list", tma_core, std::to_string(pid)},
       [&]() {
         std::string tma_output_file = getenv("TMA_OUTPUT_FILE");
         std::string tma_level = getenv("TMA_LEVEL");
