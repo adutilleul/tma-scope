@@ -23,8 +23,6 @@ make -C build -j 8
 - `TMA_TOPLEV` controls whether to use the toplev tool or not. The value of the argument will be the path to the `toplev` tool.
 - `TMA_CORE` is the core where the analysis will be performed. (Mandatory)
 
-```bash
-
 Note that sampling tools require a more-or-less large number of samples to be accurate. Hence, you should repeat your workload enough times to get a meaningful output.
 
 For a simple example using `perf`:
