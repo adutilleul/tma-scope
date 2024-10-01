@@ -43,3 +43,6 @@ CMakeUserPresets.json
 *.exe
 *.out
 *.app
+
+*.ldscript 
+
