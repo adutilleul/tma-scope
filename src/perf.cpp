@@ -26,7 +26,10 @@
  * @param ctx DynamoRIO context
  * @param data User data
  */
-static void onAfterTarget(void *ctx, void *data) {}
+static void onAfterTarget(void *ctx, void *data) {
+
+  exit(0);
+}
 
 void child_run(const std::vector<std::string> &cmd) {
   const char **args = new const char *[cmd.size() + 1];
