@@ -14,18 +14,11 @@
 #include <dlfcn.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <stdint.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-
-// Imports
-#include "dr_api.h"
-#include "dr_events.h"
-#include "drmgr.h"
-#include "drsyms.h"
-#include "drwrap.h"
-#include <stdint.h>
 
 /**
  * @brief Target function post-execution handler
