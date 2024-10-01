@@ -63,7 +63,8 @@ static void onBeforeTarget(void *ctx, void **data) {
   std::string tma_core = getenv("TMA_CORE");
 
   vfork_child_run(
-      {"/usr/bin/taskset", "--pid", "--cpu-list", tma_core, std::to_string(pid)},
+      {"/usr/bin/taskset", "--pid", "--cpu-list", tma_core,
+       std::to_string(pid)},
       [&]() {
         std::string tma_output_file = getenv("TMA_OUTPUT_FILE");
         std::string tma_level = getenv("TMA_LEVEL");
@@ -90,25 +91,25 @@ static void onBeforeTarget(void *ctx, void **data) {
 static void onModuleLoad(void *ctx, const module_data_t *module, bool loaded) {
   const char *tma_function_name = getenv("TMA_FUNCTION");
   if (tma_function_name == NULL) {
-    printf("TMA_FUNCTION not set\n");
+    printf("[tmascope] TMA_FUNCTION not set\n");
     exit(1);
   }
 
   const char *tma_core = getenv("TMA_CORE");
   if (tma_core == NULL) {
-    printf("TMA_CORE not set\n");
+    printf("[tmascope] TMA_CORE not set\n");
     exit(1);
   }
 
   const char *tma_output_file = getenv("TMA_OUTPUT_FILE");
   if (tma_output_file == NULL) {
-    printf("TMA_OUTPUT_FILE not set\n");
+    printf("[tmascope] TMA_OUTPUT_FILE not set\n");
     exit(1);
   }
 
   const char *tma_level = getenv("TMA_LEVEL");
   if (tma_level == NULL) {
-    printf("TMA_LEVEL not set\n");
+    printf("[tmascope] TMA_LEVEL not set\n");
     exit(1);
   }
 
@@ -121,11 +122,12 @@ static void onModuleLoad(void *ctx, const module_data_t *module, bool loaded) {
   app_pc address = module->start + offset;
 
   if (error == DRSYM_SUCCESS) {
-    printf("Symbol found: %s\n", tma_function_name);
-    // Wrap the target function
+    printf("[tmascope] Found symbol: %s in module: %s\n", tma_function_name,
+           module->full_path);
     drwrap_wrap(address, onBeforeTarget, onAfterTarget);
   } else {
-    printf("Symbol not found: %s\n", tma_function_name);
+    printf("[tmascope] Symbol not found: %s in module: %s\n", tma_function_name,
+           module->full_path);
   }
 }
 
